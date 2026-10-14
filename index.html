@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Voice | Campus Food Feedback & Admin Portal</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <!-- MAIN NAVIGATION -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon">🍽️</span>
+            <div>
+                <h2>Canteen Voice</h2>
+                <p>Campus Food Feedback Portal</p>
+            </div>
+        </div>
+
+        <!-- PORTAL SWITCHER TABS -->
+        <nav class="nav-tabs" aria-label="Portal Selection">
+            <button type="button" id="tabStudent" class="nav-tab active" data-view="student">
+                <span>📝</span> Student Feedback
+            </button>
+            <button type="button" id="tabAdmin" class="nav-tab" data-view="admin">
+                <span>🔐</span> Admin Portal
+            </button>
+        </nav>
+
+        <div class="navbar-tag">Your Voice Matters</div>
+    </header>
+
+    <main class="container">
+
+        <!-- ========================================================= -->
+        <!-- STUDENT / USER PORTAL VIEW                                -->
+        <!-- ========================================================= -->
+        <div id="studentPortalView" class="portal-view">
+
+            <!-- LOGIN SECTION -->
+            <section id="loginSection" class="login-section">
+                <div class="welcome-panel">
+                    <span class="eyebrow">WELCOME TO CANTEEN VOICE</span>
+                    <h1>Good food starts with <span>your feedback.</span></h1>
+                    <p>
+                        Share your experience, report food issues, rate your
+                        favourite meals, and help improve our campus canteen.
+                    </p>
+
+                    <div class="benefit-list">
+                        <div>✓ Simple food feedback</div>
+                        <div>✓ Quick complaints and suggestions</div>
+                        <div>✓ Help improve food quality</div>
+                    </div>
+                </div>
+
+                <div class="login-card">
+                    <div class="card-icon">👋</div>
+                    <h2>Get Started</h2>
+                    <p class="muted">Enter your details to continue.</p>
+
+                    <form id="loginForm">
+                        <label for="userName">Full Name</label>
+                        <input
+                            type="text"
+                            id="userName"
+                            placeholder="Enter your full name"
+                            required
+                            minlength="2"
+                        >
+
+                        <label for="mobileNumber">Mobile Number</label>
+                        <input
+                            type="tel"
+                            id="mobileNumber"
+                            placeholder="Enter 10-digit mobile number"
+                            inputmode="numeric"
+                            maxlength="10"
+                            required
+                        >
+
+                        <label>I am a</label>
+                        <input type="hidden" id="userRole" value="Student">
+
+                        <div class="role-options">
+                            <button
+                                type="button"
+                                class="role-button active"
+                                data-role="Student"
+                            >
+                                🎓 Student
+                            </button>
+
+                            <button
+                                type="button"
+                                class="role-button"
+                                data-role="Faculty"
+                            >
+                                👨‍🏫 Faculty
+                            </button>
+                        </div>
+
+                        <button type="submit" class="primary-button">
+                            Continue to Canteen →
+                        </button>
+                    </form>
+
+                    <p class="privacy-note">
+                        Your feedback helps us improve the canteen experience.
+                    </p>
+                </div>
+            </section>
+
+            <!-- HOME SECTION (VISIBLE AFTER STUDENT LOGS IN) -->
+            <section id="homeSection" hidden>
+                <div class="dashboard-header">
+                    <div>
+                        <span class="eyebrow">CANTEEN DASHBOARD</span>
+                        <h1 id="welcomeMessage">Welcome to Canteen Voice!</h1>
+                        <p class="muted">
+                            Select a food item to review, complain, or share a suggestion.
+                        </p>
+                    </div>
+
+                    <button type="button" id="logoutButton" class="secondary-button">
+                        Log Out
+                    </button>
+                </div>
+
+                <!-- LIVE DASHBOARD STATISTICS -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">🍱</span>
+                        <p>Menu Items</p>
+                        <h2 id="statsFoodItems">98</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <p>Average Rating</p>
+                        <h2 id="statsAvgRating">—</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-icon">💬</span>
+                        <p>Total Feedback</p>
+                        <h2 id="statsFeedbackCount">—</h2>
+                    </div>
+                </div>
+
+                <!-- FOOD SEARCH -->
+                <section class="content-card food-section">
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">EXPLORE THE MENU</span>
+                            <h2>Find Your Food</h2>
+                            <p class="muted">
+                                Search for a food item and select it to give feedback.
+                            </p>
+                        </div>
+                        <span class="section-emoji">🔎</span>
+                    </div>
+
+                    <label for="foodSearch">Search food by name or category</label>
+                    <input
+                        type="search"
+                        id="foodSearch"
+                        placeholder="e.g. Vada Pav, Tea, Breakfast, Pizza..."
+                        autocomplete="off"
+                    >
+
+                    <div id="foodResults" class="food-results">
+                        <p class="muted">Loading food menu...</p>
+                    </div>
+                </section>
+
+                <!-- SELECTED FOOD BANNER -->
+                <section id="selectedFood" class="content-card selected-food-card" hidden>
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">YOUR SELECTED ITEM</span>
+                            <h2 id="selectedFoodName">Food Name</h2>
+                            <p class="muted">Confirm your item before submitting feedback below.</p>
+                        </div>
+                        <span class="section-emoji">🍽️</span>
+                    </div>
+
+                    <div class="selected-food-details">
+                        <div>
+                            <span class="muted">Food Item</span>
+                            <strong id="selectedFoodLabel">Food Name</strong>
+                        </div>
+
+                        <div>
+                            <span class="muted">Menu Price</span>
+                            <strong id="selectedFoodPrice">₹0</strong>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="foodId">
+                    <input type="hidden" id="foodName">
+                    <input type="hidden" id="foodPrice">
+                </section>
+
+                <!-- REVIEW AND COMPLAINT FORM -->
+                <section id="reviewSection" class="content-card" hidden>
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">TELL US YOUR EXPERIENCE</span>
+                            <h2>Food Review / Complaint</h2>
+                            <p class="muted">
+                                Help us understand what went well and what needs improvement.
+                            </p>
+                        </div>
+                        <span class="section-emoji">📝</span>
+                    </div>
+
+                    <form id="reviewForm">
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label for="priceOpinion">Price Opinion</label>
+                                <select id="priceOpinion" required>
+                                    <option value="">Select your opinion</option>
+                                    <option value="Affordable">Affordable</option>
+                                    <option value="Reasonable">Reasonable</option>
+                                    <option value="Expensive">Expensive</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quality">Food Quality</label>
+                                <select id="quality" required>
+                                    <option value="">Select quality</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <select id="quantity" required>
+                                    <option value="">Select quantity</option>
+                                    <option value="Sufficient">Sufficient</option>
+                                    <option value="Too Little">Too Little</option>
+                                    <option value="Too Much">Too Much</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="taste">Taste</label>
+                                <select id="taste" required>
+                                    <option value="">Select taste</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hygiene">Hygiene</label>
+                                <select id="hygiene" required>
+                                    <option value="">Select hygiene level</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="complaintType">Complaint Type (Optional)</label>
+                                <select id="complaintType">
+                                    <option value="">No complaint</option>
+                                    <option value="Food Quality">Food Quality</option>
+                                    <option value="High Price">High Price</option>
+                                    <option value="Low Quantity">Low Quantity</option>
+                                    <option value="Poor Hygiene">Poor Hygiene</option>
+                                    <option value="Bad Taste">Bad Taste</option>
+                                    <option value="Service Delay">Service Delay</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment">Additional Comments</label>
+                            <textarea
+                                id="comment"
+                                rows="4"
+                                placeholder="Describe your experience or complaint in detail..."
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="primary-button">
+                            Submit Review / Complaint →
+                        </button>
+                    </form>
+                </section>
+
+                <!-- RATING AND SUGGESTION FORM -->
+                <section id="suggestionSection" class="content-card" hidden>
+                    <div class="section-title">
+                        <div>
+                            <span class="eyebrow">SHARE YOUR IDEAS</span>
+                            <h2>Rating & Suggestions</h2>
+                            <p class="muted">
+                                Rate your experience and suggest how we can improve.
+                            </p>
+                        </div>
+                        <span class="section-emoji">⭐</span>
+                    </div>
+
+                    <form id="suggestionForm">
+                        <div class="form-group">
+                            <label>Rate this food item</label>
+
+                            <div class="star-rating" aria-label="Food rating">
+                                <button type="button" class="star-button" data-rating="1" aria-label="1 star">★</button>
+                                <button type="button" class="star-button" data-rating="2" aria-label="2 stars">★</button>
+                                <button type="button" class="star-button" data-rating="3" aria-label="3 stars">★</button>
+                                <button type="button" class="star-button" data-rating="4" aria-label="4 stars">★</button>
+                                <button type="button" class="star-button" data-rating="5" aria-label="5 stars">★</button>
+                            </div>
+
+                            <p id="ratingText" class="rating-feedback-text">Choose a rating from 1 to 5 stars.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suggestionType">Suggestion Category</label>
+                            <select id="suggestionType">
+                                <option value="">Choose a category</option>
+                                <option value="Food Quality">Food Quality</option>
+                                <option value="Menu Variety">Menu Variety</option>
+                                <option value="Pricing">Pricing</option>
+                                <option value="Hygiene">Hygiene</option>
+                                <option value="Service">Service</option>
+                                <option value="New Food Item">New Food Item</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suggestion">Your Suggestion</label>
+                            <textarea
+                                id="suggestion"
+                                rows="4"
+                                placeholder="What would you like the canteen to improve?"
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="primary-button">
+                            Submit Rating & Suggestion →
+                        </button>
+                    </form>
+                </section>
+
+                <footer class="footer">
+                    <p>© 2026 Canteen Voice | Together, let's improve campus food.</p>
+                </footer>
+            </section>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ADMIN PORTAL VIEW (COMBINED INTO THE APPLICATION)         -->
+        <!-- ========================================================= -->
+        <div id="adminPortalView" class="portal-view" hidden>
+
+            <!-- ADMIN LOGIN PANEL -->
+            <section id="adminLoginPanel" class="login-card admin-login-card">
+                <div class="card-icon">🔐</div>
+                <h2>Admin Login</h2>
+                <p class="muted">Sign in with the administrator password to view all campus feedback.</p>
+
+                <form id="adminLoginForm">
+                    <label for="adminPassword">Admin Password</label>
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Enter admin password (default: Admin@123)"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <button type="submit" class="primary-button">Sign In to Dashboard →</button>
+                    <p id="adminLoginMessage" class="admin-message" role="status"></p>
+                </form>
+
+                <p class="privacy-note">
+                    Default password: <code>Admin@123</code> (configurable in environment variables)
+                </p>
+            </section>
+
+            <!-- ADMIN DASHBOARD PANEL (SHOWN ONCE LOGGED IN) -->
+            <section id="adminDashboardPanel" hidden>
+                <div class="dashboard-header">
+                    <div>
+                        <span class="eyebrow">ADMINISTRATION</span>
+                        <h1>Feedback Dashboard</h1>
+                        <p class="muted">Monitor real-time reviews, complaints, ratings, and student suggestions.</p>
+                    </div>
+
+                    <button type="button" id="adminLogoutButton" class="secondary-button logout-button">
+                        Sign Out
+                    </button>
+                </div>
+
+                <!-- ADMIN 4-STAT METRICS GRID -->
+                <div class="stats-grid admin-stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">📊</span>
+                        <p>Total Feedback</p>
+                        <h2 id="adminTotalFeedback">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-icon">⚠️</span>
+                        <p>Complaints</p>
+                        <h2 id="adminTotalComplaints">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-icon">💡</span>
+                        <p>Suggestions</p>
+                        <h2 id="adminTotalSuggestions">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <p>Average Rating</p>
+                        <h2 id="adminAverageRating">0</h2>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUBTABS: DATA VS ITEMS -->
+                <div class="admin-subtabs" role="tablist" aria-label="Admin Repository Switcher">
+                    <button type="button" id="adminSubtabFeedback" class="admin-subtab active" data-subtab="feedback">
+                        <span>💬</span> Student Feedback (<span id="adminFeedbackCountBadge">0</span>)
+                    </button>
+                    <button type="button" id="adminSubtabMenu" class="admin-subtab" data-subtab="menu">
+                        <span>🍽️</span> Canteen Menu Items (<span id="adminMenuCountBadge">98</span>)
+                    </button>
+                </div>
+
+                <!-- FEEDBACK MANAGEMENT PANEL (DATA) -->
+                <section id="adminFeedbackSection" class="content-card admin-feedback-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">RECORD REPOSITORY</span>
+                            <h2>All Submitted Feedback</h2>
+                            <p class="muted">Live entries from students and faculty.</p>
+                        </div>
+
+                        <button id="adminRefreshButton" class="secondary-button" type="button">
+                            ↻ Refresh
+                        </button>
+                    </div>
+
+                    <!-- SEARCH & FILTER BAR -->
+                    <div class="admin-filters">
+                        <input
+                            type="search"
+                            id="adminSearchInput"
+                            placeholder="Search by student name, food, phone or comment..."
+                            autocomplete="off"
+                        >
+
+                        <select id="adminTypeFilter">
+                            <option value="">All Feedback Types</option>
+                            <option value="Review / Complaint">Reviews / Complaints</option>
+                            <option value="Rating / Suggestion">Ratings / Suggestions</option>
+                        </select>
+                    </div>
+
+                    <p id="adminStatusMessage" class="muted filter-status-text" role="status"></p>
+
+                    <!-- DYNAMIC FEEDBACK LIST -->
+                    <div id="adminFeedbackList" class="feedback-list">
+                        <p class="muted">Loading feedback...</p>
+                    </div>
+                </section>
+
+                <!-- MENU ITEMS MANAGEMENT PANEL (ITEMS) -->
+                <section id="adminMenuSection" class="content-card admin-menu-panel" hidden>
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">CAMPUS MENU REPOSITORY</span>
+                            <h2>Canteen Food Items & Pricing</h2>
+                            <p class="muted">Explore all 98 items across 8 categories with review statistics.</p>
+                        </div>
+                    </div>
+
+                    <!-- SEARCH & CATEGORY FILTER BAR -->
+                    <div class="admin-filters">
+                        <input
+                            type="search"
+                            id="adminMenuSearchInput"
+                            placeholder="Search food item by name or category..."
+                            autocomplete="off"
+                        >
+
+                        <select id="adminMenuCategoryFilter">
+                            <option value="">All Categories (98 Items)</option>
+                            <option value="Beverages">Beverages (18 Items)</option>
+                            <option value="Snacks">Snacks (21 Items)</option>
+                            <option value="Breakfast">Breakfast (7 Items)</option>
+                            <option value="Fast Food">Fast Food (13 Items)</option>
+                            <option value="Chinese">Chinese (6 Items)</option>
+                            <option value="Meals">Meals (18 Items)</option>
+                            <option value="Healthy">Healthy (5 Items)</option>
+                            <option value="Desserts">Desserts (10 Items)</option>
+                        </select>
+                    </div>
+
+                    <p id="adminMenuStatusMessage" class="muted filter-status-text" role="status"></p>
+
+                    <!-- DYNAMIC ADMIN MENU GRID -->
+                    <div id="adminMenuList" class="admin-menu-grid">
+                        <p class="muted">Loading menu items...</p>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    <p>© 2026 Canteen Voice | Private Administration Area</p>
+                </footer>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FLOATING TOAST NOTIFICATION -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- APPLICATION SCRIPT -->
+    <script src="/script.js"></script>
+</body>
+</html>
